@@ -2,6 +2,11 @@ package utils
 
 import "strconv"
 
+type Pair[T, U any] struct {
+	K T
+	V U
+}
+
 func CastToInts(strs []string) ([]int, error) {
 	ints := []int{}
 	for _, s := range strs {
@@ -11,13 +16,13 @@ func CastToInts(strs []string) ([]int, error) {
 		}
 		ints = append(ints, i)
 	}
-    return ints, nil
+	return ints, nil
 }
 
 func Sum(is ...int) int {
-    result := 0
-    for _, i := range is {
-        result += i
-    }
-    return result
+	result := 0
+	for _, i := range is {
+		result += i
+	}
+	return result
 }
