@@ -10,14 +10,13 @@ import (
 )
 
 func solve(s string) int {
+    s = strings.TrimSpace(s)
 	lines := strings.Split(s, "\n")
 
 	for i, line := range lines {
 		_ = i
 		_ = line
 	}
-
-	fmt.Println(s)
 
 	return 0
 }
