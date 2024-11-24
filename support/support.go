@@ -116,7 +116,7 @@ func DownloadInput() {
 		}
 		fmt.Println("...")
 	} else if len(lines[0]) > 80 {
-		fmt.Printf("%s...", lines[0][:80])
+		fmt.Printf("%s...\n", lines[0][:80])
 	} else {
 		fmt.Println(lines[0])
 	}
