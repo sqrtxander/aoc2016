@@ -50,3 +50,25 @@ func Abs(n int) int {
 	}
 	return n
 }
+
+func Adjacent4(p Point) [4]Point {
+	return [4]Point{
+		{X: p.X + 1, Y: p.Y},
+		{X: p.X - 1, Y: p.Y},
+		{X: p.X, Y: p.Y + 1},
+		{X: p.X, Y: p.Y - 1},
+	}
+}
+
+func Adjacent8(p Point) [8]Point {
+	return [8]Point{
+		{X: p.X + 1, Y: p.Y - 1},
+		{X: p.X + 1, Y: p.Y},
+		{X: p.X + 1, Y: p.Y + 1},
+		{X: p.X, Y: p.Y - 1},
+		{X: p.X - 1, Y: p.Y - 1},
+		{X: p.X - 1, Y: p.Y},
+		{X: p.X - 1, Y: p.Y + 1},
+		{X: p.X, Y: p.Y + 1},
+	}
+}
