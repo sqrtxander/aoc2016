@@ -72,3 +72,10 @@ func Adjacent8(p Point) [8]Point {
 		{X: p.X, Y: p.Y + 1},
 	}
 }
+
+func Add(p, q Point) Point {
+	return Point{
+		X: p.X + q.X,
+		Y: p.Y + q.Y,
+	}
+}
