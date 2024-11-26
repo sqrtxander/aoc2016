@@ -1,5 +1,10 @@
 package utils
 
+import (
+	"log"
+	"strings"
+)
+
 type (
 	HashGrid        map[Point]bool
 	BoundedHashGrid struct {
@@ -8,6 +13,32 @@ type (
 		H    int
 	}
 )
+
+func GetHashGrid(s string, dot rune, hash rune) HashGrid {
+	result := HashGrid{}
+	lines := strings.Split(s, "\n")
+	for y, line := range lines {
+		for x, char := range line {
+			switch char {
+			case dot:
+				result[Point{X: x, Y: y}] = false
+			case hash:
+				result[Point{X: x, Y: y}] = true
+			default:
+				log.Fatalf("Invalid hashdot character: '%c'\n", char)
+			}
+		}
+	}
+	return result
+}
+
+func GetBoundedHashGrid(s string, dot rune, hash rune) (result BoundedHashGrid) {
+	lines := strings.Split(s, "\n")
+	result.Grid = GetHashGrid(s, dot, hash)
+	result.H = len(lines)
+	result.W = len(lines[0])
+	return
+}
 
 func (g BoundedHashGrid) GetBoundedHash() string {
 	result := ""
@@ -21,5 +52,5 @@ func (g BoundedHashGrid) GetBoundedHash() string {
 		}
 		result += "\n"
 	}
-    return result[:len(result)-1]
+	return result[:len(result)-1]
 }
