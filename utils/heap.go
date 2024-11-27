@@ -1,53 +1,90 @@
 package utils
 
-import "log"
+import (
+	"log"
+)
 
-type MaxHeap []int
+type Heap[T any] interface {
+	Push(T) Heap[T]
+	Pop() (Heap[T], T)
+	Peek() T
+	Heapify(int) Heap[T]
+}
+type HeapFunc[T any] struct {
+	Heap []T
+	Cmp  func(T, T) int
+}
 
-func (h MaxHeap) Push(num int) MaxHeap {
-	currIdx := len(h)
+func (h HeapFunc[T]) Push(num T) HeapFunc[T] {
+	currIdx := len(h.Heap)
 	parentIdx := (currIdx - 1) / 2
-	h = append(h, num)
-	for currIdx > 0 && h[currIdx] > h[parentIdx] {
-		h[currIdx], h[parentIdx] = h[parentIdx], h[currIdx]
+	h.Heap = append(h.Heap, num)
+	for currIdx > 0 && h.Cmp(h.Heap[currIdx], h.Heap[parentIdx]) > 0 {
+		h.Heap[currIdx], h.Heap[parentIdx] = h.Heap[parentIdx], h.Heap[currIdx]
 		currIdx = parentIdx
 		parentIdx = (currIdx - 1) / 2
 	}
 	return h
 }
 
-func (h MaxHeap) Pop() (MaxHeap, int) {
-	if len(h) == 0 {
-		log.Fatalln("Attempt to pop from an empty heap")
+func (h HeapFunc[T]) Pop() (HeapFunc[T], T) {
+	l := len(h.Heap)
+	if l == 0 {
+		log.Fatalln("Attempt to pop from empty heap")
 	}
-	result := h[0]
-	h[0] = h[len(h)-1]
-	h = h[len(h)-1:]
+	result := h.Heap[0]
+	h.Heap[0] = h.Heap[l-1]
+	h.Heap = h.Heap[:l-1]
 
-	return MaxHeapify(h, 0), result
+	return h.Heapify(0), result
 }
 
-func (h MaxHeap) Peek() int {
-	if len(h) == 0 {
-		log.Fatalln("Attempt to peek at an empty heap")
+func (h HeapFunc[T]) Peek() T {
+	if len(h.Heap) == 0 {
+		log.Fatalln("Attempt to peek at empty heap")
 	}
-	return h[0]
+	return h.Heap[0]
 }
 
-func MaxHeapify(arr []int, idx int) MaxHeap {
-	n := len(arr)
+func (h HeapFunc[T]) Heapify(idx int) HeapFunc[T] {
+	n := len(h.Heap)
 	if n == 0 {
-		return MaxHeap{}
+		return h
 	}
-	hi := idx
+	lo := idx
 	l := 2*idx + 1
 	r := 2*idx + 2
-	if l < n && arr[hi] < arr[l] {
-		hi = l
+	if l < n && h.Cmp(h.Heap[l], h.Heap[lo]) > 0 {
+		lo = l
 	}
-	if r < n && arr[hi] < arr[r] {
-		hi = r
+	if r < n && h.Cmp(h.Heap[r], h.Heap[lo]) > 0 {
+		lo = r
 	}
-	arr[hi], arr[idx] = arr[idx], arr[hi]
-	return MaxHeapify(arr, hi)
+	if lo == idx {
+		return h
+	}
+	h.Heap[lo], h.Heap[idx] = h.Heap[idx], h.Heap[lo]
+	return h.Heapify(lo)
+}
+
+func IntGreater(a, b int) int {
+	return a - b
+}
+
+func MaxHeapInt(contents []int) HeapFunc[int] {
+	return HeapFunc[int]{
+		Heap: contents,
+		Cmp:  IntGreater,
+	}
+}
+
+func IntLower(a, b int) int {
+	return b - a
+}
+
+func MinHeapInt(contents []int) HeapFunc[int] {
+	return HeapFunc[int]{
+		Heap: contents,
+		Cmp:  IntLower,
+	}
 }
