@@ -37,7 +37,6 @@ func solve(s string) int {
 	ip := 0
 	for ip < len(instructions) {
 		inst := instructions[ip]
-		// fmt.Println(inst)
 		switch inst[0] {
 		case "cpy":
 			val := getValOrLookup(inst[1], values)

@@ -163,7 +163,6 @@ func solve(s string) int {
 	states := utils.Queue[state]{init}
 	seen := []string{}
 	for len(states) > 0 {
-		// for range 9 {
 		var curr state
 		states, curr = states.Pop()
 		if isFinished(curr) {
