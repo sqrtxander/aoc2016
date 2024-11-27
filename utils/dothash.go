@@ -14,15 +14,15 @@ type (
 	}
 )
 
-func GetHashGrid(s string, dot rune, hash rune) HashGrid {
+func GetHashGrid(s string, falsy rune, truthy rune) HashGrid {
 	result := HashGrid{}
 	lines := strings.Split(s, "\n")
 	for y, line := range lines {
 		for x, char := range line {
 			switch char {
-			case dot:
+			case falsy:
 				result[Point{X: x, Y: y}] = false
-			case hash:
+			case truthy:
 				result[Point{X: x, Y: y}] = true
 			default:
 				log.Fatalf("Invalid hashdot character: '%c'\n", char)
